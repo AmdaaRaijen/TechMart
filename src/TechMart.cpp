@@ -19,3 +19,77 @@ void showMenu()
   cout << "\n========================================";
   cout << "\nSelect option (1-9): ";
 }
+
+struct Product
+{
+  string code;
+  string name;
+  string categroy;
+  double price;
+  int stock;
+};
+
+class Inventory
+{
+private:
+  static const int MAX_PRODUCTS = 50;
+  Product products[MAX_PRODUCTS];
+  int productCount;
+
+public:
+  Inventory()
+  {
+    productCount = 0;
+  }
+
+  void addProduct()
+  {
+    if (productCount >= MAX_PRODUCTS)
+    {
+      cout << "[ERROR] Inventory full. Cannot add more products.\n";
+      return;
+    }
+
+    Product newProduct;
+    cout << "Enter product code: ";
+    cin >> newProduct.code;
+
+    cin.ignore();
+
+    do
+    {
+      cout << "Enter product name: ";
+      getline(cin, newProduct.name);
+      if (newProduct.name.empty())
+      {
+        cout << "[ERROR] Product name cannot be empty.\n";
+      }
+    } while (newProduct.name.empty());
+
+    cout << "Enter product category (Smartphone/Laptop/Accessories): ";
+    cin >> newProduct.categroy;
+
+    cout << "Enter product price: ";
+    cin >> newProduct.price;
+
+    while (newProduct.price < 0)
+    {
+      cout << "[ERROR] Price cannot be negative. Enter again: ";
+      cin >> newProduct.price;
+    }
+
+    cout << "Enter product stock: ";
+    cin >> newProduct.stock;
+
+    while (newProduct.stock < 0)
+    {
+      cout << "[ERROR] Stock cannot be negative. Enter again: ";
+      cin >> newProduct.stock;
+    }
+
+    products[productCount] = newProduct;
+    productCount++;
+    cout << "[SUCCESS] Product added successfully!\n";
+    cout << newProduct.name << " | " << newProduct.categroy << " | $" << newProduct.price << " | Stock: " << newProduct.stock << "\n";
+  }
+};

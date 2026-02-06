@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-
+  Inventory techMart;
   int choice;
 
   do
@@ -27,7 +27,7 @@ int main()
     switch (choice)
     {
     case 1:
-      cout << "Adding product\n";
+      techMart.addProduct();
       break;
     case 2:
       cout << "Displaying product\n";
