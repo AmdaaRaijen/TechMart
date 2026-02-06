@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -251,5 +253,80 @@ public:
     }
     cout << "\n[SUCCESS] Products sorted by stock quantity (Ascending).\n";
     displayProducts();
+  }
+
+  void updateProductStock()
+  {
+    string code;
+    int newStock;
+
+    cout << "Enter product code to update stock: ";
+    cin >> code;
+    code = toUpperCase(code);
+
+    Product *product = findProductByCode(code);
+    if (product)
+    {
+      cout << "Current stock for " << product->name << " (" << product->code << "): " << product->stock << endl;
+      cout << "Enter new stock quantity: ";
+      cin >> newStock;
+
+      while (newStock < 0)
+      {
+        cout << "[ERROR] Stock cannot be negative. Enter again: ";
+        cin >> newStock;
+      }
+
+      product->stock = newStock;
+      cout << "[SUCCESS] Stock updated successfully!\n";
+    }
+    else
+    {
+      cout << "[INFO] Product with code " << code << " not found.\n";
+    }
+  }
+
+  void importFromFile(string filename)
+  {
+    ifstream file(filename);
+    if (!file.is_open())
+    {
+      cout << "[ERROR] Could not open file: " << filename << endl;
+      return;
+    }
+
+    string line;
+    int importedCount = 0;
+
+    while (getline(file, line) && productCount < MAX_PRODUCTS)
+    {
+      if (line.empty())
+        continue;
+
+      stringstream ss(line);
+      string code, name, category, priceStr, stockStr;
+
+      getline(ss, code, ',');
+      getline(ss, name, ',');
+      getline(ss, category, ',');
+      getline(ss, priceStr, ',');
+      getline(ss, stockStr, ',');
+
+      if (!code.empty() && !name.empty())
+      {
+        Product *p = &products[productCount];
+        p->code = toUpperCase(code);
+        p->name = name;
+        p->categroy = category;
+        p->price = stod(priceStr);
+        p->stock = stoi(stockStr);
+
+        productCount++;
+        importedCount++;
+      }
+    }
+
+    file.close();
+    cout << "[SUCCESS] Imported " << importedCount << " products from " << filename << endl;
   }
 };

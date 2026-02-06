@@ -26,6 +26,9 @@ int main()
 
     switch (choice)
     {
+    case 0:
+      techMart.importFromFile("/home/amda/code/cpp/kuliah/Smester1/Algorithm/TechMart/src/products.txt");
+      break;
     case 1:
       techMart.addProduct();
       break;
@@ -45,7 +48,7 @@ int main()
       techMart.sortProductsByStock();
       break;
     case 7:
-      cout << "Editing stock\n";
+      techMart.updateProductStock();
       break;
     case 8:
       cout << "Deleting stock\n";
