@@ -42,7 +42,7 @@ int main()
       techMart.showLowStockProducts();
       break;
     case 6:
-      cout << "Shorting product by stock\n";
+      techMart.sortProductsByStock();
       break;
     case 7:
       cout << "Editing stock\n";

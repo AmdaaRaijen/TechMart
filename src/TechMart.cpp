@@ -228,4 +228,28 @@ public:
       cout << "[INFO] No low stock products found.\n";
     }
   }
+
+  void sortProductsByStock()
+  {
+    if (productCount < 2)
+    {
+      cout << "[INFO] Not enough products to sort.\n";
+      return;
+    }
+
+    for (int i = 0; i < productCount - 1; i++)
+    {
+      for (int j = 0; j < productCount - i - 1; j++)
+      {
+        if (products[j].stock > products[j + 1].stock)
+        {
+          Product temp = products[j];
+          products[j] = products[j + 1];
+          products[j + 1] = temp;
+        }
+      }
+    }
+    cout << "\n[SUCCESS] Products sorted by stock quantity (Ascending).\n";
+    displayProducts();
+  }
 };
