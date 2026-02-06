@@ -30,7 +30,7 @@ int main()
       techMart.addProduct();
       break;
     case 2:
-      cout << "Displaying product\n";
+      techMart.displayProducts();
       break;
     case 3:
       cout << "Searching product\n";

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -103,5 +105,32 @@ public:
     productCount++;
     cout << newProduct.code << " | " << newProduct.name << " | " << newProduct.categroy << " | $" << newProduct.price << " | Stock: " << newProduct.stock << "\n";
     cout << "[SUCCESS] Product added successfully!\n";
+  }
+
+  void displayProducts()
+  {
+    if (productCount == 0)
+    {
+      cout << "[INFO] No products in inventory.\n";
+      return;
+    }
+
+    cout << "\n--- Product List ---\n";
+    cout << left << setw(10) << "CODE"
+         << setw(25) << "NAME"
+         << setw(15) << "CATEGORY"
+         << setw(15) << "PRICE ($)"
+         << setw(10) << "STOCK" << endl;
+    cout << string(75, '-') << endl;
+
+    Product *ptr = products;
+    for (int i = 0; i < productCount; i++)
+    {
+      cout << left << setw(10) << (ptr + i)->code
+           << setw(25) << (ptr + i)->name
+           << setw(15) << (ptr + i)->categroy
+           << fixed << setprecision(2) << setw(15) << (ptr + i)->price
+           << setw(10) << (ptr + i)->stock << endl;
+    }
   }
 };
