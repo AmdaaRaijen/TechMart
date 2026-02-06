@@ -48,6 +48,19 @@ private:
     return upperStr;
   }
 
+  Product *findProductByCode(const string &code)
+  {
+    Product *ptr = products;
+    for (int i = 0; i < productCount; i++)
+    {
+      if ((ptr + i)->code == code)
+      {
+        return (ptr + i);
+      }
+    }
+    return nullptr;
+  }
+
 public:
   Inventory()
   {
@@ -131,6 +144,32 @@ public:
            << setw(15) << (ptr + i)->categroy
            << fixed << setprecision(2) << setw(15) << (ptr + i)->price
            << setw(10) << (ptr + i)->stock << endl;
+    }
+  }
+
+  void searchProduct()
+  {
+    string searchCode;
+
+    cout << "\nEnter product code to search: ";
+    cin >> searchCode;
+    searchCode = toUpperCase(searchCode);
+
+    Product *ptr = products;
+    Product *foundProduct = findProductByCode(searchCode);
+
+    if (foundProduct)
+    {
+      cout << "\nProduct found:\n";
+      cout << "Code: " << foundProduct->code << endl;
+      cout << "Name: " << foundProduct->name << endl;
+      cout << "Category: " << foundProduct->categroy << endl;
+      cout << "Price: $" << fixed << setprecision(2) << foundProduct->price << endl;
+      cout << "Stock: " << foundProduct->stock << endl;
+    }
+    else
+    {
+      cout << "[INFO] Product with code " << searchCode << " not found.\n";
     }
   }
 };

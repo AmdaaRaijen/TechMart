@@ -33,7 +33,7 @@ int main()
       techMart.displayProducts();
       break;
     case 3:
-      cout << "Searching product\n";
+      techMart.searchProduct();
       break;
     case 4:
       cout << "Showing total inventory valud\n";
