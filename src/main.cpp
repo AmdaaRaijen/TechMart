@@ -51,7 +51,7 @@ int main()
       techMart.updateProductStock();
       break;
     case 8:
-      cout << "Deleting stock\n";
+      techMart.deleteProduct();
       break;
     case 9:
       cout << "\nExiting TechMart System. Goodbye!\n";

@@ -286,6 +286,48 @@ public:
     }
   }
 
+  void deleteProduct()
+  {
+    string code;
+    cout << "Enter product code to delete: ";
+    cin >> code;
+    code = toUpperCase(code);
+
+    int index = -1;
+    for (int i = 0; i < productCount; i++)
+    {
+      if (products[i].code == code)
+      {
+        index = i;
+        break;
+      }
+    }
+
+    if (index != -1)
+    {
+      cout << "Are you sure you want to delete " << products[index].name << "? (y/n): ";
+      char confirm;
+      cin >> confirm;
+      if (confirm == 'y' || confirm == 'Y')
+      {
+        for (int i = index; i < productCount - 1; i++)
+        {
+          products[i] = products[i + 1];
+        }
+        productCount--;
+        cout << "[SUCCESS] Product deleted.\n";
+      }
+      else
+      {
+        cout << "[INFO] Deletion cancelled.\n";
+      }
+    }
+    else
+    {
+      cout << "[ERROR] Product not found.\n";
+    }
+  }
+
   void importFromFile(string filename)
   {
     ifstream file(filename);
