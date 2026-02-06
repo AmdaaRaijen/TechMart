@@ -36,6 +36,16 @@ private:
   Product products[MAX_PRODUCTS];
   int productCount;
 
+  string toUpperCase(const string &str)
+  {
+    string upperStr = str;
+    for (char &c : upperStr)
+    {
+      c = toupper(c);
+    }
+    return upperStr;
+  }
+
 public:
   Inventory()
   {
@@ -55,6 +65,8 @@ public:
     cin >> newProduct.code;
 
     cin.ignore();
+
+    newProduct.code = toUpperCase(newProduct.code);
 
     do
     {
@@ -89,7 +101,7 @@ public:
 
     products[productCount] = newProduct;
     productCount++;
+    cout << newProduct.code << " | " << newProduct.name << " | " << newProduct.categroy << " | $" << newProduct.price << " | Stock: " << newProduct.stock << "\n";
     cout << "[SUCCESS] Product added successfully!\n";
-    cout << newProduct.name << " | " << newProduct.categroy << " | $" << newProduct.price << " | Stock: " << newProduct.stock << "\n";
   }
 };
