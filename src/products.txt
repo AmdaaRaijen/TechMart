@@ -1,0 +1,15 @@
+HP01,iPhone 15,Smartphone,1200,10
+LP05,ASUS ROG,Laptop,2500,3
+AK02,Logitech Mouse,Accessories,50,15
+TB03,Apple iPad,Tablet,800,7
+SP04,Samsung Galaxy,Smartphone,1100,5
+CM06,Dell Monitor,Computer,300,2
+HD07,Seagate HDD,Storage,100,20
+PR08,Canon Printer,Printer,200,4
+WC09,HP Webcam,Accessories,80,12
+KB10,Microsoft Keyboard,Accessories,70,8
+FT11,Sony Headphones,Audio,150,6
+XR12,Google Pixel,Smartphone,900,9
+TV13,Samsung TV,Electronics,1500,2
+RC14,Apple Watch,Wearable,400,11
+BS15,Lenovo ThinkPad,Laptop,2200,1

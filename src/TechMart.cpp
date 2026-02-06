@@ -197,4 +197,35 @@ public:
     cout << "Total Items: " << productCount << endl;
     cout << "Total Inventory Value: $" << fixed << setprecision(2) << totalValue << endl;
   }
+
+  void showLowStockProducts()
+  {
+    cout << "\n--- Low Stock Products (Stock < 5) ---\n";
+    cout << left << setw(10) << "CODE"
+         << setw(25) << "NAME"
+         << setw(15) << "CATEGORY"
+         << setw(15) << "PRICE ($)"
+         << setw(10) << "STOCK" << endl;
+    cout << string(75, '-') << endl;
+
+    Product *ptr = products;
+    bool found = false;
+    for (int i = 0; i < productCount; i++)
+    {
+      if ((ptr + i)->stock < 5)
+      {
+        cout << left << setw(10) << (ptr + i)->code
+             << setw(25) << (ptr + i)->name
+             << setw(15) << (ptr + i)->categroy
+             << fixed << setprecision(2) << setw(15) << (ptr + i)->price
+             << setw(10) << (ptr + i)->stock << endl;
+        found = true;
+      }
+    }
+
+    if (!found)
+    {
+      cout << "[INFO] No low stock products found.\n";
+    }
+  }
 };
