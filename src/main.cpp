@@ -36,7 +36,7 @@ int main()
       techMart.searchProduct();
       break;
     case 4:
-      cout << "Showing total inventory valud\n";
+      techMart.showTotalInventoryValue();
       break;
     case 5:
       cout << "Showing low stock products\n";

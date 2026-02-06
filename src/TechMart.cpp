@@ -61,6 +61,16 @@ private:
     return nullptr;
   }
 
+  double calculateTotalValueRecursive(int index)
+  {
+    if (index < 0)
+    {
+      return 0.0;
+    }
+
+    return products[index].price * products[index].stock + calculateTotalValueRecursive(index - 1);
+  }
+
 public:
   Inventory()
   {
@@ -171,5 +181,20 @@ public:
     {
       cout << "[INFO] Product with code " << searchCode << " not found.\n";
     }
+  }
+
+  void showTotalInventoryValue()
+  {
+    if (productCount == 0)
+    {
+      cout << "[INFO] No products in inventory.\n";
+      return;
+    }
+
+    double totalValue = calculateTotalValueRecursive(productCount - 1);
+
+    cout << "\n--- Inventory Analysis ---\n";
+    cout << "Total Items: " << productCount << endl;
+    cout << "Total Inventory Value: $" << fixed << setprecision(2) << totalValue << endl;
   }
 };
