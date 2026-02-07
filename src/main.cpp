@@ -16,19 +16,17 @@ int main()
   {
     showMenu();
 
+    // Validasi Input: Memastikan user memasukkan angka
     if (!(cin >> choice))
     {
-      cout << "[ERROR] Invalid input. Please enter a number.\n";
-      cin.clear();
-      cin.ignore(numeric_limits<streamsize>::max(), '\n');
+      cout << "[ERROR] Invalid input. Please enter a number (1-9).\n";
+      cin.clear();                                         // Reset state cin
+      cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Bersihkan buffer
       continue;
     }
 
     switch (choice)
     {
-    case 0:
-      techMart.importFromFile("/home/amda/code/cpp/kuliah/Smester1/Algorithm/TechMart/src/products.txt");
-      break;
     case 1:
       techMart.addProduct();
       break;

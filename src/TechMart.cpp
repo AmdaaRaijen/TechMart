@@ -1,11 +1,20 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
-#include <fstream>
-#include <sstream>
 
 using namespace std;
 
+// Struct untuk merepresentasikan data satu unit produk
+struct Product
+{
+  string code;
+  string name;
+  string category;
+  double price;
+  int stock;
+};
+
+// Fungsi global untuk menampilkan Menu Utama
 void showMenu()
 {
   cout << "\n========================================";
@@ -24,22 +33,14 @@ void showMenu()
   cout << "\nSelect option (1-9): ";
 }
 
-struct Product
-{
-  string code;
-  string name;
-  string categroy;
-  double price;
-  int stock;
-};
-
 class Inventory
 {
 private:
-  static const int MAX_PRODUCTS = 50;
-  Product products[MAX_PRODUCTS];
-  int productCount;
+  static const int MAX_PRODUCTS = 50; // Batas array statis
+  Product products[MAX_PRODUCTS];     // Array of struct
+  int productCount;                   // Counter jumlah produk aktif
 
+  // Manipulasi String: Mengubah teks menjadi Huruf Kapital agar pencarian case-insensitive
   string toUpperCase(const string &str)
   {
     string upperStr = str;
@@ -50,35 +51,40 @@ private:
     return upperStr;
   }
 
+  // Penggunaan POINTER: Mencari alamat memori produk berdasarkan kodenya
   Product *findProductByCode(const string &code)
   {
-    Product *ptr = products;
+    Product *ptr = products; // Inisialisasi pointer ke awal array
     for (int i = 0; i < productCount; i++)
     {
-      if ((ptr + i)->code == code)
+      if ((ptr + i)->code == code) // Akses data menggunakan aritmatika pointer
       {
-        return (ptr + i);
+        return (ptr + i); // Mengembalikan alamat produk yang ditemukan
       }
     }
-    return nullptr;
+    return nullptr; // Jika tidak ditemukan
   }
 
+  // FUNGSI REKURSIF: Menghitung total nilai (Harga x Stok) secara akumulatif
   double calculateTotalValueRecursive(int index)
   {
+    // Base case: jika index di bawah 0, berhenti
     if (index < 0)
     {
       return 0.0;
     }
-
-    return products[index].price * products[index].stock + calculateTotalValueRecursive(index - 1);
+    // Recursive step: (Nilai index saat ini) + (Nilai index sebelumnya)
+    return (products[index].price * products[index].stock) + calculateTotalValueRecursive(index - 1);
   }
 
 public:
+  // Constructor: Inisialisasi jumlah produk saat objek dibuat
   Inventory()
   {
     productCount = 0;
   }
 
+  // Menambah produk baru ke dalam array
   void addProduct()
   {
     if (productCount >= MAX_PRODUCTS)
@@ -90,11 +96,11 @@ public:
     Product newProduct;
     cout << "Enter product code: ";
     cin >> newProduct.code;
-
-    cin.ignore();
+    cin.ignore(); // Membersihkan buffer
 
     newProduct.code = toUpperCase(newProduct.code);
 
+    // Validasi String: Nama tidak boleh kosong
     do
     {
       cout << "Enter product name: ";
@@ -106,11 +112,11 @@ public:
     } while (newProduct.name.empty());
 
     cout << "Enter product category (Smartphone/Laptop/Accessories): ";
-    cin >> newProduct.categroy;
+    getline(cin, newProduct.category);
 
     cout << "Enter product price: ";
     cin >> newProduct.price;
-
+    // Validasi input harga negatif
     while (newProduct.price < 0)
     {
       cout << "[ERROR] Price cannot be negative. Enter again: ";
@@ -119,7 +125,7 @@ public:
 
     cout << "Enter product stock: ";
     cin >> newProduct.stock;
-
+    // Validasi input stok negatif
     while (newProduct.stock < 0)
     {
       cout << "[ERROR] Stock cannot be negative. Enter again: ";
@@ -128,10 +134,10 @@ public:
 
     products[productCount] = newProduct;
     productCount++;
-    cout << newProduct.code << " | " << newProduct.name << " | " << newProduct.categroy << " | $" << newProduct.price << " | Stock: " << newProduct.stock << "\n";
     cout << "[SUCCESS] Product added successfully!\n";
   }
 
+  // Menampilkan semua data menggunakan Pointer
   void displayProducts()
   {
     if (productCount == 0)
@@ -141,33 +147,30 @@ public:
     }
 
     cout << "\n--- Product List ---\n";
-    cout << left << setw(10) << "CODE"
-         << setw(25) << "NAME"
-         << setw(15) << "CATEGORY"
-         << setw(15) << "PRICE ($)"
-         << setw(10) << "STOCK" << endl;
+    cout << left << setw(10) << "CODE" << setw(25) << "NAME" << setw(15) << "CATEGORY"
+         << setw(15) << "PRICE ($)" << setw(10) << "STOCK" << endl;
     cout << string(75, '-') << endl;
 
     Product *ptr = products;
     for (int i = 0; i < productCount; i++)
     {
+      // Menampilkan data dengan akses pointer (ptr + i)
       cout << left << setw(10) << (ptr + i)->code
            << setw(25) << (ptr + i)->name
-           << setw(15) << (ptr + i)->categroy
+           << setw(15) << (ptr + i)->category
            << fixed << setprecision(2) << setw(15) << (ptr + i)->price
            << setw(10) << (ptr + i)->stock << endl;
     }
   }
 
+  // Mencari produk dengan memanggil helper findProductByCode
   void searchProduct()
   {
     string searchCode;
-
     cout << "\nEnter product code to search: ";
     cin >> searchCode;
     searchCode = toUpperCase(searchCode);
 
-    Product *ptr = products;
     Product *foundProduct = findProductByCode(searchCode);
 
     if (foundProduct)
@@ -175,7 +178,7 @@ public:
       cout << "\nProduct found:\n";
       cout << "Code: " << foundProduct->code << endl;
       cout << "Name: " << foundProduct->name << endl;
-      cout << "Category: " << foundProduct->categroy << endl;
+      cout << "Category: " << foundProduct->category << endl;
       cout << "Price: $" << fixed << setprecision(2) << foundProduct->price << endl;
       cout << "Stock: " << foundProduct->stock << endl;
     }
@@ -185,6 +188,7 @@ public:
     }
   }
 
+  // Wrapper untuk menjalankan fungsi rekursif
   void showTotalInventoryValue()
   {
     if (productCount == 0)
@@ -194,50 +198,33 @@ public:
     }
 
     double totalValue = calculateTotalValueRecursive(productCount - 1);
-
     cout << "\n--- Inventory Analysis ---\n";
     cout << "Total Items: " << productCount << endl;
     cout << "Total Inventory Value: $" << fixed << setprecision(2) << totalValue << endl;
   }
 
+  // Menampilkan produk dengan stok di bawah 5
   void showLowStockProducts()
   {
     cout << "\n--- Low Stock Products (Stock < 5) ---\n";
-    cout << left << setw(10) << "CODE"
-         << setw(25) << "NAME"
-         << setw(15) << "CATEGORY"
-         << setw(15) << "PRICE ($)"
-         << setw(10) << "STOCK" << endl;
-    cout << string(75, '-') << endl;
-
-    Product *ptr = products;
     bool found = false;
     for (int i = 0; i < productCount; i++)
     {
-      if ((ptr + i)->stock < 5)
+      if (products[i].stock < 5)
       {
-        cout << left << setw(10) << (ptr + i)->code
-             << setw(25) << (ptr + i)->name
-             << setw(15) << (ptr + i)->categroy
-             << fixed << setprecision(2) << setw(15) << (ptr + i)->price
-             << setw(10) << (ptr + i)->stock << endl;
+        cout << "- [" << products[i].code << "] " << products[i].name << " (Stock: " << products[i].stock << ")\n";
         found = true;
       }
     }
-
     if (!found)
-    {
-      cout << "[INFO] No low stock products found.\n";
-    }
+      cout << "[INFO] All stocks are sufficient.\n";
   }
 
+  // Mengurutkan produk menggunakan Bubble Sort (Ascending)
   void sortProductsByStock()
   {
     if (productCount < 2)
-    {
-      cout << "[INFO] Not enough products to sort.\n";
       return;
-    }
 
     for (int i = 0; i < productCount - 1; i++)
     {
@@ -251,15 +238,14 @@ public:
         }
       }
     }
-    cout << "\n[SUCCESS] Products sorted by stock quantity (Ascending).\n";
+    cout << "\n[SUCCESS] Products sorted by stock.\n";
     displayProducts();
   }
 
+  // Mengubah stok produk tertentu melalui pointer
   void updateProductStock()
   {
     string code;
-    int newStock;
-
     cout << "Enter product code to update stock: ";
     cin >> code;
     code = toUpperCase(code);
@@ -267,25 +253,17 @@ public:
     Product *product = findProductByCode(code);
     if (product)
     {
-      cout << "Current stock for " << product->name << " (" << product->code << "): " << product->stock << endl;
-      cout << "Enter new stock quantity: ";
-      cin >> newStock;
-
-      while (newStock < 0)
-      {
-        cout << "[ERROR] Stock cannot be negative. Enter again: ";
-        cin >> newStock;
-      }
-
-      product->stock = newStock;
-      cout << "[SUCCESS] Stock updated successfully!\n";
+      cout << "Current stock: " << product->stock << ". New stock: ";
+      cin >> product->stock;
+      cout << "[SUCCESS] Stock updated!\n";
     }
     else
     {
-      cout << "[INFO] Product with code " << code << " not found.\n";
+      cout << "[ERROR] Product not found.\n";
     }
   }
 
+  // Menghapus produk dari array dengan menggeser elemen
   void deleteProduct()
   {
     string code;
@@ -305,70 +283,17 @@ public:
 
     if (index != -1)
     {
-      cout << "Are you sure you want to delete " << products[index].name << "? (y/n): ";
-      char confirm;
-      cin >> confirm;
-      if (confirm == 'y' || confirm == 'Y')
+      // Menggeser semua elemen setelah index ke kiri
+      for (int i = index; i < productCount - 1; i++)
       {
-        for (int i = index; i < productCount - 1; i++)
-        {
-          products[i] = products[i + 1];
-        }
-        productCount--;
-        cout << "[SUCCESS] Product deleted.\n";
+        products[i] = products[i + 1];
       }
-      else
-      {
-        cout << "[INFO] Deletion cancelled.\n";
-      }
+      productCount--;
+      cout << "[SUCCESS] Product deleted.\n";
     }
     else
     {
       cout << "[ERROR] Product not found.\n";
     }
-  }
-
-  void importFromFile(string filename)
-  {
-    ifstream file(filename);
-    if (!file.is_open())
-    {
-      cout << "[ERROR] Could not open file: " << filename << endl;
-      return;
-    }
-
-    string line;
-    int importedCount = 0;
-
-    while (getline(file, line) && productCount < MAX_PRODUCTS)
-    {
-      if (line.empty())
-        continue;
-
-      stringstream ss(line);
-      string code, name, category, priceStr, stockStr;
-
-      getline(ss, code, ',');
-      getline(ss, name, ',');
-      getline(ss, category, ',');
-      getline(ss, priceStr, ',');
-      getline(ss, stockStr, ',');
-
-      if (!code.empty() && !name.empty())
-      {
-        Product *p = &products[productCount];
-        p->code = toUpperCase(code);
-        p->name = name;
-        p->categroy = category;
-        p->price = stod(priceStr);
-        p->stock = stoi(stockStr);
-
-        productCount++;
-        importedCount++;
-      }
-    }
-
-    file.close();
-    cout << "[SUCCESS] Imported " << importedCount << " products from " << filename << endl;
   }
 };
